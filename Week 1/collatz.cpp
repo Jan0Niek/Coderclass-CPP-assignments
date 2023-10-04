@@ -8,6 +8,8 @@ int main()
     std::cin >> n;
     std::cout << n << ' ';
 
+    int oneCounter = 0;
+    if (n == 1){oneCounter++;}
     while (true)
     {
         if (n % 2 == 0)
