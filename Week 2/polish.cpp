@@ -2,38 +2,39 @@
 
 int main()
 {
-    std::string input = " ";
-    std::string firstNumString;
-    std::string secondNumString;
-    double firstNumber;
-    double secondNumber;
+    std::string chosenOperator;
+    std::string num1;
+    std::string num2;
     double answer = 0;
-    while (input.at(0) != 'q')
+    while (chosenOperator != "q")
     {
-        std::cout << "Enter the expression: ";
-        std::cin >> input;
-        
-        //de dingen tussen de spaties zijn getallen domme yannick
-
-        firstNumber =  std::stod(firstNumString);
-        secondNumber =  std::stod(secondNumString);
-        switch (input.at(0))
+        std::cout << "\nEnter the expression: ";
+        std::cin >> chosenOperator;
+        if (chosenOperator == "q")
+        {
+            break;
+        }
+        std::cin >> num1;
+        std::cin >> num2;
+        switch (chosenOperator.at(0))
         {
         case '+':
-            answer = firstNumber + secondNumber;
-            std::cout << firstNumString + " + " + secondNumString + " = " + std::to_string(answer);
+            answer = std::stod(num1) + std::stod(num2);
+            std::cout << num1 + " + " + num2 + " = " << answer;
             break;
         case '-':
-            answer = firstNumber - secondNumber;
-            std::cout << firstNumString + " - " + secondNumString + " = " + std::to_string(answer);
+            answer = std::stod(num1) - std::stod(num2);
+            std::cout << num1 + " - " + num2 + " = " << answer;
             break;
         case '*':
-            answer = firstNumber * secondNumber;
-            std::cout << firstNumString + " * " + secondNumString + " = " + std::to_string(answer);
+            answer = std::stod(num1) * std::stod(num2);
+            std::cout << num1 + " * " + num2 + " = " << answer;
             break;
         case '/':
-            answer = firstNumber / secondNumber;
-            std::cout << firstNumString + " / " + secondNumString + " = " + std::to_string(answer);
+            answer = std::stod(num1) / std::stod(num2);
+            std::cout << num1 + " / " + num2 + " = " << answer;
+            break;
+        default:
             break;
         }
     }
