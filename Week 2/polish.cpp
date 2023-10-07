@@ -10,13 +10,11 @@ int main()
     {
         std::cout << "\nEnter the expression: ";
         std::cin >> chosenOperator;
-        
         if (chosenOperator == "q")
         {
             std::cin >> num1;
             std::cin >> num2;
         }
-        
         switch (chosenOperator.at(0))
         {
         case '+':
