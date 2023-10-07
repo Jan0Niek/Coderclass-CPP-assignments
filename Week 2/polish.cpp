@@ -10,7 +10,7 @@ int main()
     {
         std::cout << "\nEnter the expression: ";
         std::cin >> chosenOperator;
-        if (chosenOperator == "q")
+        if (chosenOperator != "q")
         {
             std::cin >> num1;
             std::cin >> num2;
