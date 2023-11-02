@@ -18,9 +18,9 @@ std::vector<double> solve(double a, double b, double c, double d){
     } else if (d == 0)
     {
         double x;
-        double x1 = (-b + sqrt(d)) / 2 * a;
+        double x1 = (-b + sqrt(d)) / (2 * a);
         double y1 = a*(x1*x1) + b*x1 + c;
-        double x2 = (-b - sqrt(d)) / 2 * a;
+        double x2 = (-b - sqrt(d)) / (2 * a);
         
         if (y1 == 0)
         {
@@ -52,7 +52,7 @@ int main(){
     switch (v.size())
     {
         case 2:
-            std::cout << "There are 2 solutions. \n The solutions are: x = " << v.at(0) << " and " << v.at(1) << std::endl;
+            std::cout << "There are 2 solutions. \n The solutions are: " << v.at(0) << " and " << v.at(1) << std::endl;
             break;
         
         case 1:
