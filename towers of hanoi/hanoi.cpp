@@ -20,7 +20,7 @@ void solve(const int maxH, int H, char A, char B, char C)
         return;
     }
     solve(maxH, H - 1, A, C, B);
-    std::cout << "Move disk " << H << " from " << A << " to " << C << '.\n';
+    std::cout << "Move disk " << H << " from " << A << " to " << C << ".\n";
     solve(maxH, H - 1, B, A, C);
 }
 
