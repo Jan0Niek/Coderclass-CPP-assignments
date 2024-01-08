@@ -13,30 +13,22 @@ int towerSizeInput()
     return H;
 }
 
-int solve(int H, int newH)
+void solve(const int maxH, int H, char A, char B, char C)
 {
-    if (H % 2 == 0)
+    if (H == maxH)
     {
-        std::cout << "move disk " << H-newH << " from a to b" << std::endl;
-    } else {
-        std::cout << "move disk " << H-newH << " from a to c" << std::endl;
+        return;
     }
-    if (newH==0)
-    {
-        return 1;
-    }
-    
-
-    solve(H, newH-1);
-    
+    solve(maxH, H - 1, A, C, B);
+    std::cout << "Move disk " << H << " from " << A << " to " << C << ".\n";
+    solve(maxH, H - 1, B, A, C);
 }
 
 int main()
 {
     int H = towerSizeInput();
     if (H == -1) return -1;
-    solve(H, H-1);
-    
 
+    solve(0, H, 'A', 'B', 'C');
     return 0;
 }
