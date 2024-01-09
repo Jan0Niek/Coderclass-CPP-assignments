@@ -1,7 +1,9 @@
-#include <iostream>
 #include <vector>
 
-void printSolve(std::vector<std::vector<bool>>& board)
+#include <iostream>
+
+
+void outputSolution(std::vector<std::vector<bool>>& board)
 {
     for (std::vector<bool> i : board)
     {
@@ -10,7 +12,8 @@ void printSolve(std::vector<std::vector<bool>>& board)
     }
 }
 
-bool canPlace(std::vector<std::vector<bool>>& board, int row, int collumn, int boardSize)
+
+bool checkIfPlaceable(std::vector<std::vector<bool>>& board, int row, int collumn, int boardSize)
 {
     for (std::vector<bool> currentRow : board) if (currentRow.at(collumn)) return false;
     for (int currentRow = row, currentCollumn = collumn;
@@ -26,10 +29,11 @@ bool canPlace(std::vector<std::vector<bool>>& board, int row, int collumn, int b
     return true;
 }
 
+
 bool solve(std::vector<std::vector<bool>>& board, int row, int boardSize)
 {
       
-    for (int collumn = 0; collumn < boardSize; collumn++) if (canPlace(board, row, collumn, boardSize))
+    for (int collumn = 0; collumn < boardSize; collumn++) if (checkIfPlaceable(board, row, collumn, boardSize))
     {
         board.at(row).at(collumn) = true;
         if (row == boardSize - 1 || solve(board, row + 1, boardSize)) return true;
@@ -37,6 +41,7 @@ bool solve(std::vector<std::vector<bool>>& board, int row, int boardSize)
     }
     return false;
 }
+
 
 int main()
 {
@@ -49,7 +54,7 @@ int main()
         std::cout << "error: invalid input\n";
         return -1;
     }
-    else if (boardSize == 2 || boardSize == 3)
+    else if (boardSize < 4)
     {
         std::cout << "No solution found to place " << boardSize << " queens on a " 
             << boardSize << " by " << boardSize << " chessboard\n";
@@ -58,6 +63,6 @@ int main()
 
     std::vector<std::vector<bool>> board(boardSize, std::vector<bool>(boardSize, false));
     solve(board, 0, boardSize);
-    printSolve(board);
+    outputSolution(board);
     return 0;
 }
