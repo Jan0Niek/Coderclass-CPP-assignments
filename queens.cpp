@@ -3,66 +3,86 @@
 #include <iostream>
 
 
-void outputSolution(std::vector<std::vector<bool>>& board)
+bool checkIfPlaceable(std::vector<std::vector<bool>>& board, int row, int colom, int N)
 {
-    for (std::vector<bool> i : board)
+    for (int i = 0; i < board.size(); i++)
     {
-        for (bool j : i) std::cout << ((j) ? 'Q' : '.');
-        std::cout << '\n';
+        if (board.at(i).at(colom)) 
+        {
+            return false;
+        }
     }
-}
 
+    for (int i = row, j = colom; i >= 0 && j >= 0; i--, j--)
+    {
+        if (board.at(i).at(j))
+        {
+            return false;
+        }
+    }
 
-bool checkIfPlaceable(std::vector<std::vector<bool>>& board, int row, int collumn, int boardSize)
-{
-    for (std::vector<bool> currentRow : board) if (currentRow.at(collumn)) return false;
-    for (int currentRow = row, currentCollumn = collumn;
-            currentRow >= 0 && currentCollumn >= 0;
-            currentRow--, currentCollumn--)
-        if (board.at(currentRow).at(currentCollumn)) return false;
-
-    for (int currentRow = row, currentCollumn = collumn;
-            currentRow >= 0 && currentCollumn < boardSize;
-            currentRow--, currentCollumn++)
-        if (board.at(currentRow).at(currentCollumn)) return false;
+    for (int i = row, j = colom; i >= 0 && j < N; i--, j++)
+    {
+        if (board.at(i).at(j))
+        {
+            return false;
+        }
+    }
 
     return true;
 }
 
 
-bool solve(std::vector<std::vector<bool>>& board, int row, int boardSize)
+bool solve(std::vector<std::vector<bool>>& board, int row, int N)
 {
       
-    for (int collumn = 0; collumn < boardSize; collumn++) if (checkIfPlaceable(board, row, collumn, boardSize))
+    for (int collumn = 0; collumn < N; collumn++) if (checkIfPlaceable(board, row, collumn, N)) //hiero
     {
         board.at(row).at(collumn) = true;
-        if (row == boardSize - 1 || solve(board, row + 1, boardSize)) return true;
+        if (row == N - 1 || solve(board, row + 1, N)) return true;
         board.at(row).at(collumn) = false;
     }
     return false;
 }
 
+void outputSolution(std::vector<std::vector<bool>>& board)
+{
+    for (int i = 0; i < board.size(); i++)
+    {
+        for (int j = 0; j < board.at(i).size(); j++)
+        {
+            if (board.at(i).at(j))
+            {
+                std::cout << 'Q';
+            } else {
+                std::cout << '.';
+            }
+        }
+        std::cout << '\n';
+    }
+}
+
 
 int main()
 {
-    int boardSize;
+    int N;
     std::cout << "How many queens to place on the board? ";
-    std::cin >> boardSize;
+    std::cin >> N;
     
-    if (boardSize < 2 || std::cout.fail())
+    if (N < 2 || std::cout.fail())
     {
         std::cout << "error: invalid input\n";
         return -1;
     }
-    else if (boardSize < 4)
+    else if (N < 4)
     {
-        std::cout << "No solution found to place " << boardSize << " queens on a " 
-            << boardSize << " by " << boardSize << " chessboard\n";
+        std::cout << "No solution found to place " << N << " queens on a " 
+            << N << " by " << N << " chessboard\n";
         return -1;
     }
 
-    std::vector<std::vector<bool>> board(boardSize, std::vector<bool>(boardSize, false));
-    solve(board, 0, boardSize);
+    std::vector<std::vector<bool>> board(N, std::vector<bool>(N, false));
+    solve(board, 0, N);
     outputSolution(board);
     return 0;
 }
