@@ -35,12 +35,17 @@ bool checkIfPlaceable(std::vector<std::vector<bool>>& board, int row, int colom,
 
 bool solve(std::vector<std::vector<bool>>& board, int row, int N)
 {
-      
-    for (int collumn = 0; collumn < N; collumn++) if (checkIfPlaceable(board, row, collumn, N)) //hiero
+    for (int i = 0; i < N; i++)
     {
-        board.at(row).at(collumn) = true;
-        if (row == N - 1 || solve(board, row + 1, N)) return true;
-        board.at(row).at(collumn) = false;
+        if (checkIfPlaceable(board, row, i, N))
+        {
+            board.at(row).at(i) = true;
+            if (row == N - 1 || solve(board, row + 1, N))
+            {
+                return true;
+            }
+            board.at(row).at(i) = false;
+        }
     }
     return false;
 }
@@ -71,14 +76,13 @@ int main()
     
     if (N < 2 || std::cout.fail())
     {
-        std::cout << "error: invalid input\n";
-        return -1;
+        std::cout << "error: invalid input" << std::endl;
+        return 1;
     }
     else if (N < 4)
     {
-        std::cout << "No solution found to place " << N << " queens on a " 
-            << N << " by " << N << " chessboard\n";
-        return -1;
+        std::cout << "No solution found to place " << N << " queens on a " << N << " by " << N << " chessboard" << std::endl;
+        return 2;
     }
 
     std::vector<std::vector<bool>> board(N, std::vector<bool>(N, false));
