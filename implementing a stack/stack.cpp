@@ -37,7 +37,7 @@ int Stack::pop(){
 
 std::string Stack::toString() const{
     std::string returnString = "[";
-    for (int i = elements.size()-1; i < 0; i--)
+    for (int i = elements.size()-1; i+1 > 0; i--)
     {
         returnString = returnString + std::to_string(elements.at(i)) + ",";
     }
