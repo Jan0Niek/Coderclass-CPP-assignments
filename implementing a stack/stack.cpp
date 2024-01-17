@@ -5,21 +5,16 @@
 class Stack {
    public:
         Stack();
-        bool isEmpty() const;
+        bool isEmpty() const { return elements.empty(); }
         int top() const;
         int pop();
-        void push(int i);
+        void push(int i) { elements.push_back(i); }
         std::string toString() const;
     private:
         std::vector<int> elements;
 };
-
 Stack::Stack(){
 
-}
-
-bool Stack::isEmpty() const{
-    return elements.empty();
 }
 
 int Stack::top() const{
@@ -27,7 +22,7 @@ int Stack::top() const{
     {
         throw std::runtime_error("stack is empty");
     }
-    return elements.front();
+    return elements.back();
 }
 
 int Stack::pop(){
@@ -35,18 +30,14 @@ int Stack::pop(){
     {
         throw std::runtime_error("stack is empty");
     }
-    int top = elements.front();
-    elements.erase(elements.begin());
+    int top = elements.back();
+    elements.pop_back();
     return top;
-}
-
-void Stack::push(int val){
-    elements.insert(elements.begin(), val);
 }
 
 std::string Stack::toString() const{
     std::string returnString = "[";
-    for (int i = 0; i < elements.size(); i++)
+    for (int i = elements.size()-1; i < 0; i--)
     {
         returnString = returnString + std::to_string(elements.at(i)) + ",";
     }
@@ -54,7 +45,6 @@ std::string Stack::toString() const{
     returnString = returnString + "]";
     return returnString;
 }
-
 
 
 int main() {
