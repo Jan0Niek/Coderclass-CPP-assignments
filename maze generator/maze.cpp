@@ -2,24 +2,22 @@
 #include <stack>
 #include <vector>
 
-
+class Coordinate{
+    public:
+        Coordinate(int nx, int ny){ x = nx; y = ny; }
+        int x;
+        int y;
+};
 class Cell{
     public:
         Cell();
         void setVisited(bool vis) { visited = vis; }
         void setOpeningDirection(char ch) { opening = ch; }
-        
-
     private:
-        int x;
-        int y;
         bool visited;
-        char opening; // north east south west N E S W
-
+        int opening; // 0 north, 1 east, 2 south, 3 west
 };
 Cell::Cell(){
-    x = -1;
-    y = -1;
     visited = false;
     opening = 'x';
 }
@@ -34,7 +32,8 @@ class Maze{
         int width = -1;
         int height = -1;
         std::vector<Cell> board; 
-        std::stack<Cell> backtrackStack;
+        std::stack<Coordinate> backtrackStack;
+        int visitedNum = 0;
         
 
 };
@@ -55,18 +54,11 @@ void Maze::setSize(int width, int height){
     std::cout << board.size();
 }
 void Maze::generate(){
-    
+    Coordinate currentPos(0, 0);
+    backtrackStack.push(currentPos);
+    board.at(currentPos.y * width + currentPos.x); //? idk
 }
 
-class RNG{
-    public:
-        RNG();
-    private:
-
-};
-RNG::RNG(){
-
-}
 
 int main(int argc, char *argv[])
 {
