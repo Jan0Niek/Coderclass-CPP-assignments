@@ -6,12 +6,15 @@
 class Cell{
     public:
         Cell();
+        void setVisited(bool vis) { visited = vis; }
+        void setOpeningDirection(char ch) { opening = ch; }
+        
 
     private:
         int x;
         int y;
         bool visited;
-        char opening; // north east south west
+        char opening; // north east south west N E S W
 
 };
 Cell::Cell(){
@@ -25,11 +28,13 @@ class Maze{
     public:
         Maze();
         void setSize(int width, int height);
+        void generate();
 
     private:
         int width = -1;
         int height = -1;
         std::vector<Cell> board; 
+        std::stack<Cell> backtrackStack;
         
 
 };
@@ -47,16 +52,19 @@ void Maze::setSize(int width, int height){
         Cell cell;
         board.push_back(cell);
     }
+    std::cout << board.size();
+}
+void Maze::generate(){
     
 }
 
-class Pathfinder{
+class RNG{
     public:
-        Pathfinder();
+        RNG();
     private:
 
 };
-Pathfinder::Pathfinder(){
+RNG::RNG(){
 
 }
 
@@ -73,7 +81,7 @@ int main(int argc, char *argv[])
     width = std::stoi(argv[2]);
     maze.setSize(width, height);
     maze.generate();
-    Pathfinder.dothings
+    // Pathfinder.dothings
 
 
 
