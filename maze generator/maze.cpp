@@ -61,12 +61,15 @@ void Maze::generate(){
     Coordinate newPos(-1, -1);
     int direction = -1;
 
+    //loop vanaf
+
     bool northPossible = true;
     bool eastPossible = true;
     bool southPossible = true;
     bool westPossible = true;
 
     backtrackStack.push(currentPos);
+
     board.at(currentPos.y * width + currentPos.x).setVisited(true);
     visitedNum++; 
 
@@ -103,8 +106,19 @@ void Maze::generate(){
                 westPossible = false;
             }
             break;
+        case -1:
+            std::cout << "ai na \n";
+            break;
+        }
+
+        if (northPossible == false && eastPossible == false && southPossible == false && westPossible == false)
+        {
+            currentPos = backtrackStack.top();
+            backtrackStack.pop();
         }
     }
+    currentPos = newPos;
+
     std::cout << "direction = " << direction << std::endl;
     board.at(currentPos.y * width + currentPos.x).setOpeningDirection(direction);    
     
