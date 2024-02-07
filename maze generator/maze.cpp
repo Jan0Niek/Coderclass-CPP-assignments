@@ -21,7 +21,7 @@ class Cell{
 };
 Cell::Cell(){
     visited = false;
-    opening = -1;
+    opening = -1; // v aan muren!!!
 }
 
 class Maze{
@@ -36,7 +36,7 @@ class Maze{
         std::vector<Cell> board; 
         std::stack<Coordinate> backtrackStack;
         int visitedNum = 0;
-        bool checkPossible(Coordinate newPos) { return !(board.at(newPos.y * width + newPos.x).getVisited() == true && (!(newPos.x >= 0 && newPos.x < width && newPos.y >= 0 && newPos.y < height))); }
+        bool checkPossible(Coordinate newPos) { return !((!(newPos.x >= 0 && newPos.x < width && newPos.y >= 0 && newPos.y < height)) || board.at(newPos.y * width + newPos.x).getVisited() == true); }
         
 
 };
@@ -54,74 +54,80 @@ void Maze::setSize(int width, int height){
         Cell cell;
         board.push_back(cell);
     }
-    std::cout << board.size();
 }
 void Maze::generate(){
     Coordinate currentPos(0, 0);
-    Coordinate newPos(-1, -1);
+    Coordinate newPos(0, 0);
     int direction = -1;
 
     //loop vanaf
 
-    bool northPossible = true;
-    bool eastPossible = true;
-    bool southPossible = true;
-    bool westPossible = true;
-
-    backtrackStack.push(currentPos);
-
-    board.at(currentPos.y * width + currentPos.x).setVisited(true);
-    visitedNum++; 
-
-    while (board.at(newPos.y * width + newPos.x).getVisited() == true && (!(newPos.x >= 0 && newPos.x < width && newPos.y >= 0 && newPos.y < height)))
+    while (visitedNum < width*height)
     {
-        direction = rand() % 3 + 0;
-        switch (direction)
-        {
-        case 0: //go north
-            newPos = Coordinate(currentPos.x, currentPos.y - 1);
-            if (checkPossible(newPos) == false)
-            {
-                northPossible = false;
-            }
-            break;
-        case 1: //go east
-            newPos = Coordinate(currentPos.x + 1, currentPos.y);
-            if (checkPossible(newPos) == false)
-            {
-                eastPossible = false;
-            }
-            break;
-        case 2: //go south
-            newPos = Coordinate(currentPos.x, currentPos.y + 1);
-            if (checkPossible(newPos) == false)
-            {
-                southPossible = false;
-            }
-            break;
-        case 3: //go west
-            newPos = Coordinate(currentPos.x - 1, currentPos.y);
-            if (checkPossible(newPos) == false)
-            {
-                westPossible = false;
-            }
-            break;
-        case -1:
-            std::cout << "ai na \n";
-            break;
-        }
+        bool northPossible = true;
+        bool eastPossible = true;
+        bool southPossible = true;
+        bool westPossible = true;
 
-        if (northPossible == false && eastPossible == false && southPossible == false && westPossible == false)
+        
+        board.at(currentPos.y * width + currentPos.x).setVisited(true);
+        visitedNum++; 
+
+        while ((!(newPos.x >= 0 && newPos.x < width && newPos.y >= 0 && newPos.y < height)) || board.at(newPos.y * width + newPos.x).getVisited() == true)
         {
-            currentPos = backtrackStack.top();
-            backtrackStack.pop();
+            direction = rand() % 4 + 0;
+            switch (direction)
+            {
+            case 0: //go north
+                newPos = Coordinate(currentPos.x, currentPos.y - 1);
+                if (checkPossible(newPos) == false)
+                {
+                    northPossible = false;
+                } else { northPossible = true; }
+                break;
+            case 1: //go east
+                newPos = Coordinate(currentPos.x + 1, currentPos.y);
+                if (checkPossible(newPos) == false)
+                {
+                    eastPossible = false;
+                }else { eastPossible = true; }
+                break;
+            case 2: //go south
+                newPos = Coordinate(currentPos.x, currentPos.y + 1);
+                if (checkPossible(newPos) == false)
+                {
+                    southPossible = false;
+                }else { southPossible = true; }
+                break;
+            case 3: //go west
+                newPos = Coordinate(currentPos.x - 1, currentPos.y);
+                if (checkPossible(newPos) == false)
+                {
+                    westPossible = false;
+                }else { westPossible = true; }
+                break;
+
+            }
+
+            if (northPossible == false && eastPossible == false && southPossible == false && westPossible == false)
+            {
+                currentPos = backtrackStack.top();
+                backtrackStack.pop();
+                std::cout << backtrackStack.top().x << "  " << backtrackStack.top().y << '\n';
+                bool northPossible = true;
+                bool eastPossible = true;
+                bool southPossible = true;
+                bool westPossible = true;
+            }
+            
         }
+        backtrackStack.push(currentPos);
+
+        std::cout << "direction = " << direction << std::endl;
+        board.at(currentPos.y * width + currentPos.x).setOpeningDirection(direction);   
+
+        currentPos = newPos;
     }
-    currentPos = newPos;
-
-    std::cout << "direction = " << direction << std::endl;
-    board.at(currentPos.y * width + currentPos.x).setOpeningDirection(direction);    
-    
 
 }
 
