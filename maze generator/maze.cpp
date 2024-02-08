@@ -29,6 +29,7 @@ class Maze{
         Maze();
         void setSize(int width, int height);
         void generate();
+        void output();
 
     private:
         int width = -1;
@@ -37,7 +38,7 @@ class Maze{
         std::stack<Coordinate> backtrackStack;
         int visitedNum = 0;
         bool checkPossible(Coordinate newPos) { return !((!(newPos.x >= 0 && newPos.x < width && newPos.y >= 0 && newPos.y < height)) || board.at(newPos.y * width + newPos.x).getVisited() == true); }
-        
+        std::stack<Coordinate> pathToWin;
 
 };
 Maze::Maze(){
@@ -62,16 +63,18 @@ void Maze::generate(){
 
     //loop vanaf
 
-    while (visitedNum < width*height)
+    while (visitedNum <= width*height-2)
     {
         bool northPossible = true;
         bool eastPossible = true;
         bool southPossible = true;
         bool westPossible = true;
 
+        if (currentPos.x == width - 1 && currentPos.y == height - 1){ pathToWin = backtrackStack; }
         
         board.at(currentPos.y * width + currentPos.x).setVisited(true);
         visitedNum++; 
+        std::cout << "visnum= " << visitedNum << std::endl;
 
         while ((!(newPos.x >= 0 && newPos.x < width && newPos.y >= 0 && newPos.y < height)) || board.at(newPos.y * width + newPos.x).getVisited() == true)
         {
@@ -112,8 +115,8 @@ void Maze::generate(){
             if (northPossible == false && eastPossible == false && southPossible == false && westPossible == false)
             {
                 currentPos = backtrackStack.top();
-                backtrackStack.pop();
                 std::cout << backtrackStack.top().x << "  " << backtrackStack.top().y << '\n';
+                backtrackStack.pop();
                 bool northPossible = true;
                 bool eastPossible = true;
                 bool southPossible = true;
@@ -128,6 +131,11 @@ void Maze::generate(){
 
         currentPos = newPos;
     }
+
+}
+
+void output()
+{
 
 }
 
