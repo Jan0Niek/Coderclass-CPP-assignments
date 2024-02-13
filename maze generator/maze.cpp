@@ -11,17 +11,21 @@ class Coordinate{
 class Cell{
     public:
         Cell();
+        void setOpeningDirection(int way) { openings.at(way) = true; }
+        bool isOpenInDirection(int direction) { return openings.at(direction); }
         void setVisited(bool vis) { visited = vis; }
-        void setOpeningDirection(int way) { opening = way; }
         bool getVisited() { return visited; }
-        int getOpeningDirection() { return opening; }
+        void setWin(bool win) { onWinPath = win; }
+        bool onWinpath() { return onWinPath; }
     private:
         bool visited;
-        int opening; // 0 north, 1 east, 2 south, 3 west
+        bool onWinPath;
+        std::vector<bool> openings; // 0 north, 1 east, 2 south, 3 west
 };
 Cell::Cell(){
     visited = false;
-    opening = -1; // v aan muren!!!
+    onWinPath = false;
+    std::vector<bool> openings(4);
 }
 
 class Maze{
@@ -29,6 +33,7 @@ class Maze{
         Maze();
         void setSize(int width, int height);
         void generate();
+        void makeWinPath();
         void output();
 
     private:
@@ -70,7 +75,7 @@ void Maze::generate(){
         bool southPossible = true;
         bool westPossible = true;
 
-        if (currentPos.x == width - 1 && currentPos.y == height - 1){ pathToWin = backtrackStack; }
+        if (currentPos.x == width - 1 && currentPos.y == height - 1){ pathToWin = backtrackStack; std::cout << "pad gevonden!??!\n"; }
         
         board.at(currentPos.y * width + currentPos.x).setVisited(true);
         visitedNum++; 
@@ -117,10 +122,10 @@ void Maze::generate(){
                 currentPos = backtrackStack.top();
                 std::cout << backtrackStack.top().x << "  " << backtrackStack.top().y << '\n';
                 backtrackStack.pop();
-                bool northPossible = true;
-                bool eastPossible = true;
-                bool southPossible = true;
-                bool westPossible = true;
+                northPossible = true;
+                eastPossible = true;
+                southPossible = true;
+                westPossible = true;
             }
             
         }
@@ -134,9 +139,20 @@ void Maze::generate(){
 
 }
 
-void output()
+void Maze::makeWinPath()
 {
+    Coordinate pos(-1, -1);
+    for (int i = 0; i < pathToWin.size(); i++)
+    {
+        pos = pathToWin.top();
+        board.at(pos.y * width + pos.x).setWin(true);
+        pathToWin.pop();
+    }  
+}
 
+void Maze::output()
+{
+    //hier komt de rest
 }
 
 
