@@ -155,15 +155,13 @@ void Maze::output()
         std::cout << "|";
         for (int i = 0; i < width; i++)
         {
-            std::cout << " ";
             if (board.at(j * width + i).onWinpath()) 
             { 
-                std::cout << "."; 
+                std::cout << " . "; 
             } else {
-                std::cout << " ";
+                std::cout << "   ";
             }
 
-            std::cout << " ";
             if (i < width - 1)
             {
                 if (board.at(j * width + i + 1).isOpenInDirection(3) || board.at(j * width + i).isOpenInDirection(1)) 
