@@ -53,10 +53,7 @@ void Maze::setSize(int width, int height){
     this->width = width;
     this->height = height;
     for (int i = 0; i < width*height; i++)
-    {
-        if (i % width == 0) std::cout << '\n';
-        std::cout << "hokje ";
-        
+    {    
         Cell cell;
         board.push_back(cell);
     }
@@ -116,7 +113,6 @@ void Maze::generate(){
             if (northPossible == false && eastPossible == false && southPossible == false && westPossible == false)
             {
                 currentPos = backtrackStack.top();
-                std::cout << backtrackStack.top().x << "  " << backtrackStack.top().y << '\n';
                 backtrackStack.pop();
                 northPossible = true;
                 eastPossible = true;
@@ -126,9 +122,6 @@ void Maze::generate(){
             
         }
         backtrackStack.push(currentPos);
-
-        std::cout << "direction = " << direction << std::endl;
-        std::cout << "stack size = " << backtrackStack.size() << std::endl;
         board.at(currentPos.y * width + currentPos.x).setOpeningDirection(direction);   
 
         currentPos = newPos;
