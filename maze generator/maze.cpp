@@ -58,6 +58,7 @@ void Maze::setSize(int width, int height){
         board.push_back(cell);
     }
 }
+
 void Maze::generate(){
     Coordinate currentPos(0, 0);
     Coordinate newPos(0, 0);
@@ -207,9 +208,6 @@ void Maze::output()
 
         std::cout << std::endl;
     }
-    
-    
-    
 }
 
 
