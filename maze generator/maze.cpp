@@ -54,9 +54,6 @@ void Maze::setSize(int width, int height){
     this->height = height;
     for (int i = 0; i < width*height; i++)
     {
-        if (i % width == 0) std::cout << '\n';
-        std::cout << "hokje ";
-        
         Cell cell;
         board.push_back(cell);
     }
