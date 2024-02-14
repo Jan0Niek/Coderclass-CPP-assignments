@@ -221,6 +221,7 @@ int main(int argc, char *argv[])
     int width;
     Maze maze;
 
+    srand(time(0));
     if (argc != 3 && argc != 4) return -1;
     else if (argc == 4) srand(std::stoi(argv[3])); 
     
