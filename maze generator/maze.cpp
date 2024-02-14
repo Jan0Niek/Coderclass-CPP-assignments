@@ -25,7 +25,7 @@ class Cell{
 Cell::Cell(){
     visited = false;
     onWinPath = false;
-    std::vector<bool> openings(4);
+    openings.resize(4);
 }
 
 class Maze{
@@ -66,21 +66,17 @@ void Maze::generate(){
     Coordinate newPos(0, 0);
     int direction = -1;
 
-    //loop vanaf
-
-    while (visitedNum <= width*height-2)
+    while (visitedNum != width*height-1)
     {
         bool northPossible = true;
         bool eastPossible = true;
         bool southPossible = true;
         bool westPossible = true;
 
-        if (currentPos.x == width - 1 && currentPos.y == height - 1){ pathToWin = backtrackStack; std::cout << "pad gevonden!??!\n"; }
+        if (currentPos.x == width - 1 && currentPos.y == height - 1){ pathToWin = backtrackStack; pathToWin.push(Coordinate(width-1, height-1)); }
         
         board.at(currentPos.y * width + currentPos.x).setVisited(true);
         visitedNum++; 
-        std::cout << "visnum= " << visitedNum << std::endl;
-
         while ((!(newPos.x >= 0 && newPos.x < width && newPos.y >= 0 && newPos.y < height)) || board.at(newPos.y * width + newPos.x).getVisited() == true)
         {
             direction = rand() % 4 + 0;
@@ -132,6 +128,7 @@ void Maze::generate(){
         backtrackStack.push(currentPos);
 
         std::cout << "direction = " << direction << std::endl;
+        std::cout << "stack size = " << backtrackStack.size() << std::endl;
         board.at(currentPos.y * width + currentPos.x).setOpeningDirection(direction);   
 
         currentPos = newPos;
@@ -142,7 +139,8 @@ void Maze::generate(){
 void Maze::makeWinPath()
 {
     Coordinate pos(-1, -1);
-    for (int i = 0; i < pathToWin.size(); i++)
+    int pathSize = pathToWin.size(); // why do i have to declare this as int outside of the for-loop? argh
+    for (int i = 0; i < pathSize; i++)
     {
         pos = pathToWin.top();
         board.at(pos.y * width + pos.x).setWin(true);
@@ -152,7 +150,74 @@ void Maze::makeWinPath()
 
 void Maze::output()
 {
-    //hier komt de rest
+    std::cout << "+";
+    for (int i = 0; i < width; i++)
+    {
+        std::cout << "---+";
+    }
+    std::cout << std::endl;
+
+    for (int j = 0; j < height; j++)
+    {
+        std::cout << "|";
+        for (int i = 0; i < width; i++)
+        {
+            std::cout << " ";
+            if (board.at(j * width + i).onWinpath()) 
+            { 
+                std::cout << "."; 
+            } else {
+                std::cout << " ";
+            }
+
+            std::cout << " ";
+            if (i < width - 1)
+            {
+                if (board.at(j * width + i + 1).isOpenInDirection(3) || board.at(j * width + i).isOpenInDirection(1)) 
+                { 
+                    std::cout << " "; 
+                } else {
+                    std::cout << "|";
+                }
+            } else {
+                if (board.at(j * width + i).isOpenInDirection(1)) 
+                { 
+                    std::cout << " "; 
+                } else {
+                    std::cout << "|";
+                }
+            }
+            
+        }
+        std::cout << std::endl;
+        
+        std::cout << "+";
+        for (int i = 0; i < width; i++)
+        {
+            if (j < height - 1)
+            {
+                if (board.at(j * width + i).isOpenInDirection(2) || board.at((j + 1) * width + i).isOpenInDirection(0))
+                {
+                std::cout << "   ";
+                } else {
+                    std::cout << "---";
+                }
+            } else {
+                if (board.at(j * width + i).isOpenInDirection(2)) 
+                {
+                std::cout << "   ";
+                } else {
+                    std::cout << "---";
+                }
+            }
+            std::cout << "+";
+        }
+
+        std::cout << std::endl;
+    }
+    
+    
+    
 }
 
 
@@ -169,10 +234,7 @@ int main(int argc, char *argv[])
     width = std::stoi(argv[2]);
     maze.setSize(width, height);
     maze.generate();
-    // Pathfinder.dothings
-
-
-
-
+    maze.makeWinPath();
+    maze.output();
     return 0;
 }
